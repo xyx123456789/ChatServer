@@ -1,0 +1,29 @@
+#ifndef CHATSERVER_H
+#define CHATSERVER_H
+
+#include<muduo/net/EventLoop.h>
+#include<muduo/net/TcpServer.h>
+using namespace muduo;
+using namespace muduo::net;
+
+class ChatServer{
+public:
+
+    ChatServer(EventLoop* loop,const InetAddress& addr,const string & nameOrg);
+
+    void start();
+
+private:
+    //上报连接相关信息的回调函数
+    void onConnection(const TcpConnectionPtr&);
+
+    //上报读写事件相关信息的回调函数
+    void onMessage(const TcpConnectionPtr&,Buffer *,Timestamp);
+
+
+    TcpServer server_; //实现服务器功能的类对象
+    EventLoop *loop_; //指向事件循环对象的指针
+};
+
+
+#endif
